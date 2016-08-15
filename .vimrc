@@ -26,6 +26,12 @@ Plugin 'nathanaelkane/vim-indent-guides'
 " Vim Colorschemes
 Plugin 'flazz/vim-colorschemes'
 
+" Vim match tags
+Plugin 'gregsexton/matchtag'
+
+" JSX highlighting
+Plugin 'mxw/vim-jsx'
+
 
 " " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -73,5 +79,8 @@ noremap <S-L> $
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
+" Set jsp's to be treated as html
+au BufNewFile,BufRead *.jsp set filetype=html
+
 syntax on
-colorscheme brogrammer
+colorscheme obsidian
