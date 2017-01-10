@@ -1,52 +1,62 @@
+#Auto completion
+autoload -Uz compinit
+compinit
+
+
+#Zsh History information
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=10000
+
 # colors
 cyan=%{$fg[cyan]%}
 red=%{$fg[red]%}
 green=%{$fg[green]%}
 blue=%{$fg[blue]%}
-# attributes
-
-# aliases
-alias vim="vim -p"
-alias ls="ls -G"
-alias grep="grep --colour"
-alias tree="tree -C"
-alias webapp=~/uportal/uportal/bin/webapp_cntl.sh
-
-cd() {
-    builtin cd "$@";
-    ls;
-}
-
-# bind UP and DOWN arrow keys (compatibility fallback
-# for Ubuntu 12.04, Fedora 21, and MacOSX 10.9 users)
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
 
 source ~/Extras/zsh-git-prompt/zshrc.sh
 
-fpath=(/usr/local/share/zsh-completions $fpath)
-autoload -U compinit && compinit
+fpath=(~/Extras/zsh-completions/src $fpath)
 
 precmd() {
 
     PROMPT="${cyan}%n@%n${red}%~ %{$reset_color%}$(git_super_status) ${green}%*%f
     ${blue}> "
 
+    setopt histignoredups #Ignore duplicate commands in storing commands
 }
 
-export M2_HOME=/Users/kajuan/uportal/maven
+cd() {
+    builtin cd "$@";
+    ls;
+}
+
+# aliases
+alias vim="vim -p"
+alias ls="ls --color"
+alias grep="grep --colour"
+alias tree="tree -C"
+alias webapp=~/uportal/uportal/bin/webapp_cntl.sh
+
+export M2_HOME=/home/kajuan/uportal/maven
 export M2=$M2_HOME/bin
 export PATH=$M2:$PATH
 
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home"
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
 export PATH=$JAVA_HOME/bin:$PATH
 
-export ANT_HOME=/Users/kajuan/uportal/ant
+export ANT_HOME=/home/kajuan/uportal/ant
 export PATH=$PATH:$ANT_HOME/bin
 
-export TOMCAT_HOME=/Users/kajuan/uportal/tomcat
+export TOMCAT_HOME=/home/kajuan/uportal/tomcat
 export PATH=$PATH:$TOMCAT_HOME
 export JAVA_OPTS="-server -XX:MaxPermSize=512m -Xms1024m -Xmx2048m"
+
+export NODE=/home/kajuan/Downloads/node-v4.6.1-linux-x64/bin/node
+
+export GOPATH=/home/kajuan/GOPATH
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
 
 # tomcat
 function tomcat {
@@ -112,6 +122,11 @@ for i in "$@"; do
 done
 } 
 
+source ~/Extras/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 source ~/Extras/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# OPTION 1: for most systems
+zmodload zsh/terminfo
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down

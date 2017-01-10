@@ -13,9 +13,12 @@ Plugin 'VundleVim/Vundle.vim'
 " " The following are examples of different formats supported.
 " " Keep Plugin commands between vundle#begin/end.
 " " plugin on GitHub repo
+"
 
-"Vim Airline
-Plugin 'bling/vim-airline'
+" Vim Airline and Themes
+Plugin 'vim-airline/vim-airline'
+
+Plugin 'vim-airline/vim-airline-themes'
 
 "Git gutter
 Plugin 'airblade/vim-gitgutter'
@@ -28,6 +31,9 @@ Plugin 'flazz/vim-colorschemes'
 
 " Vim match tags
 Plugin 'gregsexton/matchtag'
+
+" Javascript
+Plugin 'pangloss/vim-javascript'
 
 " JSX highlighting
 Plugin 'mxw/vim-jsx'
@@ -60,9 +66,10 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 set undofile
-set undodir=/Users/kajuan/.vim/.vimundo  
+set undodir=/home/kajuan/.vim/.vimundo  
 set clipboard=unnamedplus
-set mouse=a
+set mouse=r
+set laststatus=2
 
 " treat jsp files as html
 " au BufReadPost *.jsp set syntax=html
