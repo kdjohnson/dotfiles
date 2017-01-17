@@ -81,10 +81,10 @@ function +vi-git-remotebranch() {
     fi
 }
 
-zstyle ':vcs_info:*' stagedstr '✚'
-zstyle ':vcs_info:*' unstagedstr '●'
-zstyle ':vcs_info:*' formats '%b%f %m%u%c'
-zstyle ':vcs_info:*' actionformats '%b%f %m%u%c'
+zstyle ':vcs_info:*' stagedstr ' ✚ '
+zstyle ':vcs_info:*' unstagedstr ' ● '
+zstyle ':vcs_info:*' formats '%b %m%u%c'
+zstyle ':vcs_info:*' actionformats '%b %m%u%c'
 
 
 #Prompt
@@ -102,10 +102,15 @@ source $HOME/Extras/zsh-history-substring-search/zsh-history-substring-search.zs
 
 # aliases
 alias vim="vim -p"
-alias ls="ls -G"
+alias ls="ls --color"
 alias grep="grep --colour"
 alias tree="tree -C"
 #alias webapp=~/uportal/uportal/bin/webapp_cntl.sh
+#
+cd() {
+    builtin cd "$@";
+    ls --color;
+}
 
 #############
 ## zsh-history-bstring-search
