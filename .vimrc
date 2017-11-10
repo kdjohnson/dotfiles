@@ -1,60 +1,56 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Specify a directory for plugins
+" - For Neovim: ~/.local/share/nvim/plugged
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.local/share/nvim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" " alternatively, pass a path where Vundle should install plugins
-" "call vundle#begin('~/some/path/here')
-"
-" " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-"
-" " The following are examples of different formats supported.
-" " Keep Plugin commands between vundle#begin/end.
-" " plugin on GitHub repo
-"
+" Clang format
+Plug 'rhysd/vim-clang-format'
 
 " Vim Airline and Themes
-Plugin 'vim-airline/vim-airline'
-
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 
 "Git gutter
-Plugin 'airblade/vim-gitgutter'
-
-"Indent Guides
-Plugin 'nathanaelkane/vim-indent-guides'
+Plug 'airblade/vim-gitgutter'
 
 " Vim Colorschemes
-Plugin 'flazz/vim-colorschemes'
-
-" Vim match tags
-Plugin 'gregsexton/matchtag'
-
-" Javascript
-Plugin 'pangloss/vim-javascript'
-
-" JSX highlighting
-Plugin 'mxw/vim-jsx'
+Plug 'flazz/vim-colorschemes'
 
 
-" " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" " To ignore plugin indent changes, instead use:
-" "filetype plugin on
-" "
-" " Brief help
-" " :PluginList       - lists configured plugins
-" " :PluginInstall    - installs plugins; append `!` to update or just
-" :PluginUpdate
-" " :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" " :PluginClean      - confirms removal of unused plugins; append `!` to
-" auto-approve removal
-" "
-" " see :h vundle for more details or wiki for FAQ
-" " Put your non-Plugin stuff after this line
+" Seattle colorscheme
+Plug 'mbbill/vim-seattle'
+
+
+" NERDTree
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+
+"Go
+Plug 'fatih/vim-go'
+
+"YouCompleteMe
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+
+"Janah colorscheme
+Plug 'mhinz/vim-janah'
+
+"Vim jxs
+Plug 'mxw/vim-jsx'
+
+"Go autocomplete
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+"Prettier
+Plug 'prettier/vim-prettier', {
+            \ 'do': 'yarn install',
+            \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql'] }
+
+Plug 'maxst/flatcolor'
+
+Plug 'zacanger/angr.vim'
+
+" Initialize plugin system
+call plug#end()
+
+
 set smartindent
 set cursorline
 set number
@@ -66,19 +62,37 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 set undofile
-set undodir=/home/kajuan/.vim/.vimundo  
+"set undodir=/home/kajuan/.vim/.vimundo  
 set clipboard=unnamedplus
 set mouse=r
 set laststatus=2
 
-" treat jsp files as html
-" au BufReadPost *.jsp set syntax=html
+
+"ClangFormat for java
+autocmd FileType java ClangFormatAutoEnable
+let g:clang_format#command="clang-format-4.0"
+
+
+" JSX Syntax for js files
+let g:jsx_ext_required = 0
+
+let g:python3_host_prog = '/usr/bin/python3'
+
+"Jsx syntax for .js files
+let g:jsx_ext_required = 0
+
+"Deoplete
+let g:deoplete#enable_at_startup = 1
 
 " auto open NERDTree
 " autocmd vimenter * NERDTree
 
 " close NERDTree if it is the only one open
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+let g:prettier#config#semi = 'false'
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql PrettierAsync
 
 inoremap jj <ESC><Right>
 noremap <S-H> ^
@@ -86,8 +100,9 @@ noremap <S-L> $
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
-" Set jsp's to be treated as html
-au BufNewFile,BufRead *.jsp set filetype=html
-
 syntax on
-colorscheme obsidian
+set background=dark
+if has('nvim') || has('termguicolors')
+  set termguicolors
+endif
+colorscheme angr

@@ -13,6 +13,7 @@ HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 
+alias clang-format=clang-format-4.0
 #Auto completion
 autoload -Uz compinit && compinit
 
@@ -60,7 +61,7 @@ function +vi-git-st() {
     behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
     (( $behind )) && gitstatus+=( "%F{red}-${behind}%f" )
 
-    hook_com[misc]+="%F{cyan}${(j:/:)%fgitstatus}"
+    hook_com[misc]+="${(j:/:)gitstatus}"
 }
 
 ### git: Show remote branch name for remote-tracking branches
@@ -81,20 +82,21 @@ function +vi-git-remotebranch() {
     fi
 }
 
-zstyle ':vcs_info:*' stagedstr ' ✚ '
-zstyle ':vcs_info:*' unstagedstr ' ● '
-zstyle ':vcs_info:*' formats '%b %m%u%c'
-zstyle ':vcs_info:*' actionformats '%b %m%u%c'
+zstyle ':vcs_info:*' stagedstr ' %F{034}✚%f '
+zstyle ':vcs_info:*' unstagedstr ' %F{196}●%f '
+zstyle ':vcs_info:*' formats '%F{069}%b%f %u%c'
+zstyle ':vcs_info:*' actionformats '%F{069}%b%f %u%c'
 
 
 #Prompt
 #Right hand side of prompt
 RPROMPT='${vcs_info_msg_0_}'
 #Left hand side of prompt
-PS1='%B%K{208}%F{black}%n@%m%k%f:%K{green}%F{black}%~%k%f %% '
+PS1='%B%K{064}%F{white}%n@%m%k%f:%K{064}%F{white}%~%k%f
+λ '
 
 
-fpath=($HOME/.shellutils/zsh-completions $fpath)
+fpath=($HOME/Extras/zsh-completions/src $fpath)
 
 
 source $HOME/Extras/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -105,11 +107,12 @@ alias vim="vim -p"
 alias ls="ls --color"
 alias grep="grep --colour"
 alias tree="tree -C"
-#alias webapp=~/uportal/uportal/bin/webapp_cntl.sh
+alias webapp=~/uportal/uportal/bin/webapp_cntl.sh
+alias nvim=~/nvim.appimage
 #
 cd() {
     builtin cd "$@";
-    ls --color;
+    exa;
 }
 
 #############
@@ -139,86 +142,168 @@ setopt HIST_IGNORE_ALL_DUPS
 #############
 
 
-#export M2_HOME=/home/kajuan/uportal/maven
-#export M2=$M2_HOME/bin
-#export PATH=$M2:$PATH
+export M2_HOME=/home/kajuan/uportal/maven
+export M2=$M2_HOME/bin
+export PATH=$M2:$PATH
 
-#export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
-#export PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"
+export PATH=$JAVA_HOME/bin:$PATH
 
-#export ANT_HOME=/home/kajuan/uportal/ant
-#export PATH=$PATH:$ANT_HOME/bin
+export ANT_HOME=/home/kajuan/uportal/ant
+export PATH=$PATH:$ANT_HOME/bin
 
-#export TOMCAT_HOME=/home/kajuan/uportal/tomcat
-#export PATH=$PATH:$TOMCAT_HOME
-#export JAVA_OPTS="-server -XX:MaxPermSize=512m -Xms1024m -Xmx2048m"
+export CATALINA_HOME=/home/kajuan/uportal/tomcat
+export PATH=$PATH:$CATALINA_HOME
+
+export TOMCAT_HOME=/home/kajuan/uportal/tomcat
+export PATH=$PATH:$TOMCAT_HOME
+export JAVA_OPTS="-server -XX:MaxPermSize=512m -Xms1024m -Xmx2048m"
 
 
-#export GOPATH=/home/kajuan/GOPATH
-#export GOBIN=$GOPATH/bin
-#export PATH=$PATH:$GOBIN
+export GOPATH=/home/kajuan/GOPATH
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
 
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/opt/gradle/gradle-4.0.1/bin
+
+export PORTAL_HOME=~/portal
+
+#########
 # tomcat
-#
-#function tomcat {
-#for i in "$@"; do
-#    if [[ $i == "start" ]]; then
-#        $TOMCAT_HOME/bin/startup.sh
-#        tail -f $TOMCAT_HOME/logs/catalina.out
-#    elif [[ $i == "stop" ]]; then
-#        ps -ef | grep 'tomcat' | grep -v grep | awk '{print $2}' | xargs kill
-#        kill -9 $(ps aux | grep 'tomcat' | awk '{print $2}')
-#    elif [[ $i == "restart" ]]; then
-#        ps -ef | grep 'tomcat' | grep -v grep | awk '{print $2}' | xargs kill
-#        $TOMCAT_HOME/bin/startup.sh
-#    elif [[ $i == "clean" ]]; then
-#        rm -rf $TOMCAT_HOME/webapps/*
-#        rm -rf $TOMCAT_HOME/work/Catalina/localhost/*
-#        rm -rf $TOMCAT_HOME/temp/*
-#        rm -rf $TOMCAT_HOME/logs/*.log
-#        rm -rf $TOMCAT_HOME/logs/*.log*
-#        rm -rf $TOMCAT_HOME/logs/*.txt
-#        rm -rf $TOMCAT_HOME/logs/portal/*
-#    elif [[ $i == "kill" ]]; then
-#        ps -ef | grep 'tomcat' | grep -v grep | awk '{print $2}' | xargs kill
-#    elif [[ $i == "status" ]]; then
-#        ps aux | grep 'tomcat'
-#    elif [[ $i == "webapps" ]]; then
-#        cd $TOMCAT_HOME/webapps
-#    elif [[ $i == "logs" ]]; then
-#        cd $TOMCAT_HOME/logs
-#    else
-#        echo "whachu tryna do"
-#    fi
-#done
-#}
+#########
 
-# build uportal
-#function uportal {
-#for i in "$@"; do
-#    if [[ $i == "start" ]]; then
-#        tomcat stop
-#        tomcat clean
-#        cd $HOME/uportal/uportal
-#        ant clean initportal && tomcat start
-#    elif [[ $i == "base" ]]; then
-#       cd $HOME/uportal/uportal
-#   elif [[ $i == "pom" ]]; then
-#        cd $HOME/uportal/uportal
-#        vim pom.xml
-#    else
-#        echo "whachu tryna do"
-#    fi
-#done
-#}
+function tomcat {
+  for i in "$@"; do
+    if [[ $i == "start" ]]; then
+      $TOMCAT_HOME/bin/startup.sh
+      tail -f $TOMCAT_HOME/logs/catalina.out
+    elif [[ $i == "stop" ]]; then
+      for pid in $(ps -ef | grep "[t]omcat" | awk '{print $2}'); do kill -9 $pid; done
+    elif [[ $i == "clean" ]]; then
+      for pid in $(ps -ef | grep "[t]omcat" | awk '{print $2}'); do kill -9 $pid; done
+          rm -rf $TOMCAT_HOME/logs/* 
+          rm -rf $TOMCAT_HOME/webapps/*
+          rm -rf $TOMCAT_HOME/work/*
+          rm -rf $TOMCAT_HOME/temp/*
+    elif [[ $i == "status" ]]; then
+      ps aux | grep -v 'grep' | grep '[t]omcat'
+    elif [[ $i == "logs" ]]; then
+      cd ~/uportal/tomcat/logs
+    elif [[ $i == 'webapps' ]]; then
+      cd ~/uportal/tomcat/webapps
+    elif [[ $i == "kill" ]] then
+      for pid in $(ps -ef | grep "[t]omcat" | awk '{print $2}'); do kill -9 $pid; done
+    else
+      echo "please type start, stop, clean, or status"
+    fi  
+  done
+}
 
-# M2
-#function repo {
-#for i in "$@"; do
-#    if [[ $i == "clean" ]]; then
-#        rm -rf $HOME/.m2/repository/*
-#    else
-#        echo "Wrong command"
-#    fi
-#done
-#} 
+
+#########
+# uportal
+#########
+
+function uportal {
+  for i in "$@"; do
+    if [[ $i == "start" ]]; then
+      tomcat kill
+      tomcat clean
+      cd $HOME/uportal/uportal
+      ant -logger org.apache.tools.ant.listener.AnsiColorLogger clean initportal && tomcat start
+    elif [[ $i == "home" ]]; then
+      cd $HOME/uportal/uportal
+    elif [[ $i == "pom" ]]; then
+      cd $HOME/uportal/uportal
+      vim pom.xml
+    else
+      echo "whachu tryna do"
+    fi
+  done
+}
+
+
+function portlets {
+    for i in "$@"; do
+        if [[ $i == "home" ]]; then
+            cd $HOME/uportal/portlets 
+        elif [[ $i == "courses" ]]; then
+            cd $HOME/uportal/portlets/CoursesPortlet
+        elif [[ $i == "mydetails" ]]; then
+            cd $HOME/uportal/portlets/MyDetailsPortlet
+        elif [[ $i == "ptod" ]]; then
+            cd $HOME/uportal/portlets/progress-to-degree
+        else
+            echo "whachu tryna do"
+        fi
+    done
+}
+
+#########
+# repo
+#########
+
+function repo {
+for i in "$@"; do
+    if [[ $i == "clean" ]]; then
+        rm -rf $HOME/.m2/repository/*
+    else
+        echo "Wrong command"
+    fi
+done
+} 
+
+
+##############
+# quickDeploy
+##############
+function quickDeploy {
+  if mvn clean package -Dfilters.file=/home/$USER/uportal/uportal/filters/local.properties; then
+      sleep 5
+      WARPATH=`readlink -f $(find . -name '*.war' -type f)`
+      cd ~/uportal/uportal
+      sleep 5
+      ant deployPortletApp -DportletApp=$WARPATH
+      cd -   
+  fi
+}
+
+function gradleDeploy {
+  if gradle clean build -Dfilters=/home/$USER/uportal/uportal/filters/local.properties; then 
+    sleep 1
+    WARPATH=`readlink -f $(find . -name '*.war' -type f)`
+    cd ~/uportal/uportal
+    sleep 1
+    ant deployPortletApp -DportletApp=$WARPATH
+    echo $WARPATH
+    cd -   
+  fi
+}
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# place this after nvm initialization!
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
