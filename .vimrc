@@ -47,6 +47,10 @@ Plug 'maxst/flatcolor'
 
 Plug 'zacanger/angr.vim'
 
+Plug 'rust-lang/rust.vim'
+
+Plug 'xuhdev/vim-latex-live-preview'
+
 " Initialize plugin system
 call plug#end()
 
@@ -58,11 +62,11 @@ set hlsearch
 set statusline+=%F
 set ruler
 set si
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set expandtab
 set undofile
-"set undodir=/home/kajuan/.vim/.vimundo  
+"set undodir=/home/kajuan/.vim/.vimundo
 set clipboard=unnamedplus
 set mouse=r
 set laststatus=2
@@ -76,13 +80,27 @@ let g:clang_format#command="clang-format-4.0"
 " JSX Syntax for js files
 let g:jsx_ext_required = 0
 
-let g:python3_host_prog = '/usr/bin/python3'
 
 "Jsx syntax for .js files
 let g:jsx_ext_required = 0
 
 "Deoplete
 let g:deoplete#enable_at_startup = 1
+
+" Arch Python path
+let g:python3_host_prog = '/usr/bin/python'
+
+" OSX Python path
+" let g:python3_host_prog = '/Library/Frameworks/Python.framework/Versions/3.6/bin/python3.6'
+
+" OSX Python path
+"let g:ycm_rust_src_path = '/Users/kajuan/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src'
+
+" Latex live preview
+" let g:livepreview_previewer = 'open -a Preview'
+
+" Linux Python path
+" let g:python3_host_prog = '/usr/bin/python3'
 
 " auto open NERDTree
 " autocmd vimenter * NERDTree

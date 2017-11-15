@@ -92,8 +92,7 @@ zstyle ':vcs_info:*' actionformats '%F{069}%b%f %u%c'
 #Right hand side of prompt
 RPROMPT='${vcs_info_msg_0_}'
 #Left hand side of prompt
-PS1='%B%K{064}%F{white}%n@%m%k%f:%K{064}%F{white}%~%k%f
-λ '
+PS1='%B%K{062}%F{white}%n@%m%k%f:%K{062}%F{white}%~%k%f λ '
 
 
 fpath=($HOME/Extras/zsh-completions/src $fpath)
