@@ -1,0 +1,168 @@
+[bar/kajuan]
+
+;------------;
+; DIMENSIONS ;
+;------------;
+monitor = ${env:MONITOR:}
+
+width = 100%
+height = 27
+offset-y = 0
+offset-x = 0
+
+border-top-size = 0
+border-bottom-size = 0
+border-right-size = 0
+border-left-size = 0
+
+;----------;
+; LOCATION ;
+;----------;
+
+bottom = false
+wm-restack = none
+override-redirect = false
+
+;-------;
+; FONTS ;
+;-------;
+
+font-0 = Hack:size=10;3
+font-1 = "Source Code Pro Semibold:pixelsize=10;1"
+font-2 = "Font Awesome 5 Free:style=Solid:pixelsize=10;1"
+font-3 = "Font Awesome 5 Brands:pixelsize=10;1"
+
+;--------;
+; COLORS ;
+;--------;
+
+background = #2f2f38
+foreground = #A5D6A7
+border-color = 0
+
+;---------------;
+; MISCELLANEOUS ;
+;---------------;
+
+fixed-center = true
+padding-left = 0
+padding-right = 2
+module-margin = 1.5
+
+modules-left = i3 volume
+modules-center = date
+modules-right = wlan cpu powermenu
+
+tray-position = none
+tray-detached = true
+
+
+
+[module/i3]
+type = internal/i3
+
+pin-workspaces = true
+strip-wsnumbers = true
+enable-scroll = false
+
+
+label-mode = %mode%
+label-mode-background = #212121
+
+label-separator-padding = 3
+label-visible-padding = 3
+
+label-focused-background = #A5D6A7
+label-focused-foreground = #000000
+label-focused-padding = 3
+
+label-unfocused-foreground = #afafaf
+label-unfocused-padding = 3
+
+label-urgent-foreground = #ff0000
+label-urgent-padding = 3
+
+
+[module/date]
+type = internal/date
+interval = 5
+
+date =
+date-alt = " %Y-%m-%d"
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+format-prefix = 
+format-foreground = #212121
+format-background = #A5D6A7
+format-padding = 2
+
+label = %date% %time%
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = #A5D6A7
+label-close =  cancel
+label-close-foreground = #A5D6A7
+label-separator = |
+label-separator-foreground = #A5D6A7
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
+[module/volume]
+type = internal/volume
+
+format-volume = <ramp-volume> <label-volume>
+format-muted =  0%
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+
+
+[module/wlan]
+type = internal/network
+
+interface = enp0s31f6
+
+interval = 5
+
+label-connected =  %local_ip%
+label-disconnected =  Not Connected
+
+[module/cpu]
+type = internal/cpu
+label =  %percentage%%
+
+
+[module/memory]
+type = internal/memory
+label =  %gb_used%
+
+[bar/float]
+
+inherit = bar/kajuan
+
+background = #ffffff
+
+tray-position = center
